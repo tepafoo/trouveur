@@ -45,10 +45,11 @@ Scans through the given HTML `element` and highlights occurrences of the given `
 `text` {String} text to match  
 `element` {HTMLElement} HTML element to scan through  
 `options` {Object} optional object with any of the following optional properties:  
-  `i` {Boolean} `true` for case-insensitive matching  
-  `w` {Boolean} `true` for whole-word matches only  
+`options.i` {Boolean} `true` for case-insensitive matching  
+`options.w` {Boolean} `true` for whole-word matches only  
   
 The default options are:  
+
     {
       i : true, // case insensitive
       w : false // not whole-word
@@ -87,10 +88,10 @@ Scans through the given HTML element and finds occurrences of the given text.
 `text` {String} text to match  
 `element` {HTMLElement} HTML element to scan through  
 `options` {Object} optional object with any of the following optional properties:  
-  `i` {Boolean} `true` for case-insensitive matching  
-  `w` {Boolean} `true` for whole-word matches only  
-  `h` {Boolean} `true` to highlight matches  
-  `r` {String} return type, any of: `'fn' 'an' 'aon' 'aun'` meaning `'first node' 'any node' 'all ordered nodes' 'all unordered nodes'`  
+`options.i` {Boolean} `true` for case-insensitive matching  
+`options.w` {Boolean} `true` for whole-word matches only  
+`options.h` {Boolean} `true` to highlight matches  
+`options.r` {String} return type, any of: `'fn' 'an' 'aon' 'aun'` meaning `'first node' 'any node' 'all ordered nodes' 'all unordered nodes'`  
 
 The default options are:
 
@@ -118,9 +119,9 @@ Scans through the given HTML element and counts occurrences of the given text.
 `text` {String} text to match  
 `element`{HTMLElement} HTML element to scan through  
 `options` {Object} optional object with any of the following optional properties:  
-  `i` {Boolean} `true` for case-insensitive matching  
-  `w` {Boolean} `true` for whole-word matches only  
-  `h` {Boolean} `true` to highlight matches  
+`options.i` {Boolean} `true` for case-insensitive matching  
+`options.w` {Boolean} `true` for whole-word matches only  
+`options.h` {Boolean} `true` to highlight matches  
 
 The default options are:
 
@@ -146,10 +147,10 @@ Scans through the given HTML element and replaces occurrences of the given text.
 `replacement` {String} text replacement  
 `element` {HTMLElement} HTML element to scan through  
 `options` {Object} optional object with any of the following optional properties:  
-  `i` {Boolean} `true` for case-insensitive matching  
-  `w` {Boolean} `true` for whole-word matches only  
-  `h` {Boolean} `true` to highlight matches  
-  `r` {String} return type, any of: `'fn' 'an' 'aon' 'aun'` meaning `'first node' 'any node' 'all ordered nodes' 'all unordered nodes'`  
+`options.i` {Boolean} `true` for case-insensitive matching  
+`options.w` {Boolean} `true` for whole-word matches only  
+`options.h` {Boolean} `true` to highlight matches  
+`options.r` {String} return type, any of: `'fn' 'an' 'aon' 'aun'` meaning `'first node' 'any node' 'all ordered nodes' 'all unordered nodes'`  
 
 The default options are:
 
@@ -175,11 +176,11 @@ Download
 
 Trouveur needs XRegexp with the XRegexp Unicode plugin to run (Basescript only).
 
-Get the original source file from here: trouveur.js
+Get the original source file from here: [trouveur.js](https://github.com/tepafoo/trouveur/blob/master/src/trouveur.js "trouveur.js")
 
-Get the minified source file from here: trouveur.min.js
+Get the minified source file from here: [trouveur.min.js](https://github.com/tepafoo/trouveur/blob/master/build/target/trouveur.min.js "trouveur.min.js")
 
-Get Trouveur packaged with XRegExp and minified from here: trouveur.pack.min.js
+Get Trouveur packaged with XRegExp and minified from here: [trouveur.pack.min.js](https://github.com/tepafoo/trouveur/blob/master/build/target/trouveur.pack.min.js "trouveur.pack.min.js")
 
 
 Tests
