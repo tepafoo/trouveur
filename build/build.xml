@@ -1,0 +1,103 @@
+<project default="run-all">
+
+	<!-- properties -->
+	
+	<property file="local.properties"/>
+
+	<!-- Xvfb display number -->
+	<property name="display" value="99" />
+
+	<!-- js-test-driver specific -->
+	<property name="serverPortNumber" value="4224" />
+	<property name="testReportsFolderBase" value="target/test-reports" />
+	<property name="jsTestDriverJarPath" value="lib/JsTestDriver-1.3.2.jar" />
+
+
+	<!-- targets -->
+
+	<target name="run-tests-on-single-browser">
+		<echo message="${message}"/>
+		<exec executable="java" failonerror="true">
+			<arg line="-jar ${jsTestDriverJarPath} --basePath ../ --config ${configFile} --port ${serverPortNumber} --browser ${browser} --tests all --testOutput ${testReportsFolder}" />
+			<!-- Xvfb not working -->
+			<!--env key="DISPLAY" value=":${display}" /-->
+		</exec>
+	</target>
+
+	<target name="run-tests-on-all-browsers">
+		<echo message="${message}"/>
+
+		<!-- Chrome -->
+		<antcall target="run-tests-on-single-browser">
+		    <param name="message" value="Running tests in Chrome"/>
+		    <param name="browser" value="${browser.location.chrome}"/>
+		</antcall>
+
+		<!-- Firefox -->
+		<antcall target="run-tests-on-single-browser">
+		    <param name="message" value="Running tests in Firefox"/>
+		    <param name="browser" value="${browser.location.firefox}"/>
+		</antcall>
+
+		<!-- Opera -->
+		<!-- Need a more powerful machine for this one to work :( -->
+		<!-- antcall target="run-tests-on-single-browser">
+		    <param name="message" value="Running tests in Opera"/>
+		    <param name="configFile" value="${configFile}"/>
+		    <param name="browser" value="${browser.location.opera}"/>
+		</antcall-->
+	</target>
+
+	<target name="run-tests-on-original">
+		<antcall target="run-tests-on-all-browsers">
+		    <param name="message" value="Running tests on original Trouveur"/>
+		    <param name="configFile" value="../test/conf/jsTestDriver.conf"/>
+		    <param name="testReportsFolder" value="${testReportsFolderBase}/original"/>
+		</antcall>
+	</target>
+
+	<target name="minify">
+		<exec executable="java" failonerror="true">
+			<arg line="-jar lib/compiler.jar --js ../src/trouveur.js --js_output_file target/trouveur.min.js" />
+		</exec>
+	</target>
+
+	<target name="run-tests-on-minified">
+		<antcall target="run-tests-on-all-browsers">
+		    <param name="message" value="Running tests on minified Trouveur"/>
+		    <param name="configFile" value="../test/conf/jsTestDriverMinified.conf"/>
+		    <param name="testReportsFolder" value="${testReportsFolderBase}/minified"/>
+		</antcall>
+	</target>
+
+	<target name="minify-pack">
+		<exec executable="java" failonerror="true">
+			<arg line="-jar lib/compiler.jar --js ../lib/xregexp.js --js ../lib/xregexp-unicode-base.js --js ../src/trouveur.js --js_output_file target/trouveur.pack.min.js" />
+		</exec>
+	</target>
+
+	<target name="run-tests-on-minified-pack">
+		<antcall target="run-tests-on-all-browsers">
+		    <param name="message" value="Running tests on minified pack Trouveur with XRegExp"/>
+		    <param name="configFile" value="../test/conf/jsTestDriverMinifiedPack.conf"/>
+		    <param name="testReportsFolder" value="${testReportsFolderBase}/minified-pack"/>
+		</antcall>
+	</target>
+
+	<target name="start-xvfb">
+        <exec executable="Xvfb" failonerror="false" spawn="true">
+            <arg line=":${display} -ac -screen 0 1024x768x16" />
+        </exec>
+        <echo taskname="start-xvfb" message="Using display ${display}" />
+    </target>
+
+    <target name="stop-xvfb">
+        <exec executable='bash' failonerror="false" spawn="true">
+            <arg line='ps -ef | grep "Xvfb :$1" | grep -v grep | awk "{print $2}" | xargs kill' />
+        </exec>
+    </target>
+
+	<!-- Xvfb not working -->
+	<!-- target name="run-all-with-xvfb" depends="start-xvfb,run-tests-on-original,minify,run-tests-on-minified,stop-xvfb"></target -->
+	<target name="run-all" depends="run-tests-on-original,minify,run-tests-on-minified,minify-pack,run-tests-on-minified-pack"></target>
+</project>
