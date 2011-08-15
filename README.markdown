@@ -33,7 +33,7 @@ API
 
 Trouveur's functions are:
 
-**Highlight**
+### Highlight
     
     Trouveur.highlight(text, element [, options]);
     
@@ -60,7 +60,7 @@ The default options are:
 `undefined` does not return anything  
 or throws an error {Error} if any of the inputs are invalid
 
-**Un-highlight**
+### Un-highlight
     
     Trouveur.unhighlight(element);
     
@@ -76,7 +76,7 @@ Un-highlights any matches contained in `element` that were previously highlighte
 `undefined` does not return anything  
 or throws an error {Error} if the input element is invalid  
 
-**Find**
+### Find
     
     Trouveur.find(text, element [, options]);
     
@@ -107,7 +107,7 @@ The default options are:
 returns {Array} an array of HTML elements that contain the given text. The number of nodes and their order depends on the value used for `options.r`  
 or throws an error {Error} if any of the inputs are invalid  
 
-**Count**
+### Count
     
     Trouveur.count(text, element [, options]);
     
@@ -136,7 +136,7 @@ The default options are:
 returns {Number} the number of occurrences of the given text in the given HTML element  
 or throws an error {Error} if any of the inputs are invalid  
 
-**Replace**
+### Replace
     
     Trouveur.replace(text, replacement, element [, options]);
     
@@ -164,7 +164,7 @@ The default options are:
 returns {Array} an array of HTML elements that contain the given text. The number of nodes and their order depends on the value used for `options.r`  
 or throws an error {Error} if any of the inputs are invalid  
 
-**Version**
+### Version
     
     Trouveur.version
     
