@@ -39,25 +39,24 @@ Trouveur's functions are:
 
 Scans through the given HTML `element` and highlights occurrences of the given `text`.
 
-*Input*
+**Input**
 
-`text` {String} text to match
-`element` {HTMLElement} HTML element to scan through
-`options` {Object} optional object with any of the following optional properties:
-  `i` {Boolean} `true` for case-insensitive matching
-  `w` {Boolean} `true` for whole-word matches only
-
-The default options are:
+`text` {String} text to match  
+`element` {HTMLElement} HTML element to scan through  
+`options` {Object} optional object with any of the following optional properties:  
+  `i` {Boolean} `true` for case-insensitive matching  
+  `w` {Boolean} `true` for whole-word matches only  
+  
+The default options are:  
     {
-      i : true, // case insensitive.
+      i : true, // case insensitive
       w : false // not whole-word
     }
 
-*Output*
+**Output**
 
-`undefined` does not return anything
-or
-throws an error {Error} if any of the inputs are invalid
+`undefined` does not return anything  
+or throws an error {Error} if any of the inputs are invalid
 
     
     Trouveur.unhighlight(element);
@@ -65,15 +64,14 @@ throws an error {Error} if any of the inputs are invalid
 
 Un-highlights any matches contained in `element` that were previously highlighted through `Trouveur.highlight()`, `Trouveur.find()`, `Trouveur.count()` or `Trouveur.replace()`.
 
-*Input*
+**Input**
 
 `element` {HTMLElement} HTML element to scan through
 
-*Output*
+**Output**
 
-`undefined` does not return anything
-or
-throws an error {Error} if the input element is invalid
+`undefined` does not return anything  
+or throws an error {Error} if the input element is invalid  
 
     
     Trouveur.find(text, element [, options]);
@@ -81,29 +79,28 @@ throws an error {Error} if the input element is invalid
 
 Scans through the given HTML element and finds occurrences of the given text.
 
-*Input*
+**Input**
 
-`text` {String} text to match
-`element` {HTMLElement} HTML element to scan through
-`options` {Object} optional object with any of the following optional properties:
-  `i` {Boolean} `true` for case-insensitive matching
-  `w` {Boolean} `true` for whole-word matches only
-  `h` {Boolean} `true` to highlight matches
-  `r` {String} return type, any of: `'fn' 'an' 'aon' 'aun'` meaning `'first node' 'any node' 'all ordered nodes' 'all unordered nodes'
+`text` {String} text to match  
+`element` {HTMLElement} HTML element to scan through  
+`options` {Object} optional object with any of the following optional properties:  
+  `i` {Boolean} `true` for case-insensitive matching  
+  `w` {Boolean} `true` for whole-word matches only  
+  `h` {Boolean} `true` to highlight matches  
+  `r` {String} return type, any of: `'fn' 'an' 'aon' 'aun'` meaning `'first node' 'any node' 'all ordered nodes' 'all unordered nodes'  
 
 The default options are:
     {
-      i : true, // case insensitive.
+      i : true, // case insensitive
       w : false, // not whole-word
       h : true, // highlight matches
       r : 'aun' // all unordered nodes
     }
 
-*Output*
+**Output**
 
-returns {Array} an array of HTML elements that contain the given text. The number of nodes and their order depends on the value used for `options.r`
-or
-throws an error {Error} if any of the inputs are invalid
+returns {Array} an array of HTML elements that contain the given text. The number of nodes and their order depends on the value used for `options.r`  
+or throws an error {Error} if any of the inputs are invalid  
 
     
     Trouveur.count(text, element [, options]);
@@ -111,53 +108,52 @@ throws an error {Error} if any of the inputs are invalid
 
 Scans through the given HTML element and counts occurrences of the given text.
 
-*Input*
+**Input**
 
-`text` {String} text to match
-`element`{HTMLElement} HTML element to scan through
-`options` {Object} optional object with any of the following optional properties:
-  `i` {Boolean} `true` for case-insensitive matching
-  `w` {Boolean} `true` for whole-word matches only
-  `h` {Boolean} `true` to highlight matches
+`text` {String} text to match  
+`element`{HTMLElement} HTML element to scan through  
+`options` {Object} optional object with any of the following optional properties:  
+  `i` {Boolean} `true` for case-insensitive matching  
+  `w` {Boolean} `true` for whole-word matches only  
+  `h` {Boolean} `true` to highlight matches  
 
 The default options are:
     {
-      i : true, // case insensitive.
+      i : true, // case insensitive
       w : false, // not whole-word
       h : true // highlight matches
     }
 
-*Output*
+**Output**
 
-returns {Number} the number of occurrences of the given text in the given HTML element
-or 
-throws an error {Error} if any of the inputs are invalid
+returns {Number} the number of occurrences of the given text in the given HTML element  
+or throws an error {Error} if any of the inputs are invalid  
 
     
     Trouveur.replace(text, replacement, element [, options]);
     
     
-Scans through the given HTML element and replaces occurrences of the given text.
-`text` {String} text to match
-`replacement` {String} text replacement
-`element` {HTMLElement} HTML element to scan through
-`options` {Object} optional object with any of the following optional properties:
-  `i` {Boolean} `true` for case-insensitive matching
-  `w` {Boolean} `true` for whole-word matches only
-  `h` {Boolean} `true` to highlight matches
-  `r` {String} return type, any of: `'fn' 'an' 'aon' 'aun'` meaning `'first node' 'any node' 'all ordered nodes' 'all unordered nodes'`
+Scans through the given HTML element and replaces occurrences of the given text.  
+
+`text` {String} text to match  
+`replacement` {String} text replacement  
+`element` {HTMLElement} HTML element to scan through  
+`options` {Object} optional object with any of the following optional properties:  
+  `i` {Boolean} `true` for case-insensitive matching  
+  `w` {Boolean} `true` for whole-word matches only  
+  `h` {Boolean} `true` to highlight matches  
+  `r` {String} return type, any of: `'fn' 'an' 'aon' 'aun'` meaning `'first node' 'any node' 'all ordered nodes' 'all unordered nodes'`  
 
 The default options are:
     {
-      i : true, // case insensitive.
+      i : true, // case insensitive
       w : false, // not whole-word
       h : true, // highlight matches
       r : 'aun' // all unordered nodes
     }
 
-returns {Array} an array of HTML elements that contain the given text. The number of nodes and their order depends on the value used for `options.r`
-or
-throws an error {Error} if any of the inputs are invalid
+returns {Array} an array of HTML elements that contain the given text. The number of nodes and their order depends on the value used for `options.r`  
+or throws an error {Error} if any of the inputs are invalid  
 
     
     Trouveur.version
