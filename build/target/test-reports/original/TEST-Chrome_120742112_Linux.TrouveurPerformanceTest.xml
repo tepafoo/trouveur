@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Chrome_120742112_Linux.TrouveurPerformanceTest" errors="0" failures="0" tests="4" time="32.54">
+<testcase classname="Chrome_120742112_Linux.TrouveurPerformanceTest" name="testFindPerformanceUsingWikipediaPage" time="8.197"/>
+<testcase classname="Chrome_120742112_Linux.TrouveurPerformanceTest" name="testReplacePerformanceUsingWikipediaPage" time="7.959"/>
+<testcase classname="Chrome_120742112_Linux.TrouveurPerformanceTest" name="testCountPerformanceUsingWikipediaPage" time="8.158"/>
+<testcase classname="Chrome_120742112_Linux.TrouveurPerformanceTest" name="testHighlightPerformanceUsingWikipediaPage" time="8.226"/>
+<system-out><![CDATA[[LOG] 
+[LOG] --- Trouveur.find ---
+[LOG] 3959
+[LOG] 4202[LOG] 
+[LOG] --- Trouveur.replace ---
+[LOG] 3974
+[LOG] 3959[LOG] 
+[LOG] --- Trouveur.count ---
+[LOG] 3924
+[LOG] 4208[LOG] 
+[LOG] --- Trouveur.highlight ---
+[LOG] 3966
+[LOG] 4234]]></system-out>
+</testsuite>

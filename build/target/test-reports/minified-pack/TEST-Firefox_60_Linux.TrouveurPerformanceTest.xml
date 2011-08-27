@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="Firefox_60_Linux.TrouveurPerformanceTest" errors="0" failures="0" tests="4" time="23.860998">
+<testcase classname="Firefox_60_Linux.TrouveurPerformanceTest" name="testFindPerformanceUsingWikipediaPage" time="6.148"/>
+<testcase classname="Firefox_60_Linux.TrouveurPerformanceTest" name="testReplacePerformanceUsingWikipediaPage" time="5.67"/>
+<testcase classname="Firefox_60_Linux.TrouveurPerformanceTest" name="testCountPerformanceUsingWikipediaPage" time="5.948"/>
+<testcase classname="Firefox_60_Linux.TrouveurPerformanceTest" name="testHighlightPerformanceUsingWikipediaPage" time="6.095"/>
+<system-out><![CDATA[[LOG] 
+[LOG] --- Trouveur.find ---
+[LOG] 2941
+[LOG] 3136[LOG] 
+[LOG] --- Trouveur.replace ---
+[LOG] 2842
+[LOG] 2780[LOG] 
+[LOG] --- Trouveur.count ---
+[LOG] 2878
+[LOG] 3017[LOG] 
+[LOG] --- Trouveur.highlight ---
+[LOG] 2915
+[LOG] 3131]]></system-out>
+</testsuite>

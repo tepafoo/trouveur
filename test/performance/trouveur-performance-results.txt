@@ -1,0 +1,109 @@
+Original
+
+[LOG] 
+[LOG] --- Trouveur.find ---
+[LOG] scan duration: 2998
+[LOG] scan duration: 3190
+[LOG] 
+[LOG] average scan duration: 3094
+[LOG] 
+[LOG] --- Trouveur.replace ---
+[LOG] scan duration: 2895
+[LOG] scan duration: 2861
+[LOG] 
+[LOG] average scan duration: 2878
+[LOG] 
+[LOG] --- Trouveur.count ---
+[LOG] scan duration: 2966
+[LOG] scan duration: 3172
+[LOG] 
+[LOG] average scan duration: 3069
+[LOG] 
+[LOG] --- Trouveur.highlight ---
+[LOG] scan duration: 2945
+[LOG] scan duration: 3178
+[LOG] 
+[LOG] average scan duration: 3061.5
+
+For loops with variable instantiation
+
+[LOG] 
+[LOG] --- Trouveur.find ---
+[LOG] scan duration: 2972
+[LOG] scan duration: 3164
+[LOG] 
+[LOG] average scan duration: 3068
+[LOG] 
+[LOG] --- Trouveur.replace ---
+[LOG] scan duration: 2960
+[LOG] scan duration: 2924
+[LOG] 
+[LOG] average scan duration: 2942
+[LOG] 
+[LOG] --- Trouveur.count ---
+[LOG] scan duration: 3020
+[LOG] scan duration: 3236
+[LOG] 
+[LOG] average scan duration: 3128
+[LOG] 
+[LOG] --- Trouveur.highlight ---
+[LOG] scan duration: 2963
+[LOG] scan duration: 3199
+[LOG] 
+[LOG] average scan duration: 3081
+
+Smaller XPath array push
+
+[LOG] 
+[LOG] --- Trouveur.find ---
+[LOG] scan duration: 2970
+[LOG] scan duration: 3172
+[LOG] 
+[LOG] average scan duration: 3071
+[LOG] 
+[LOG] --- Trouveur.replace ---
+[LOG] scan duration: 2935
+[LOG] scan duration: 2876
+[LOG] 
+[LOG] average scan duration: 2905.5
+[LOG] 
+[LOG] --- Trouveur.count ---
+[LOG] scan duration: 2953
+[LOG] scan duration: 3166
+[LOG] 
+[LOG] average scan duration: 3059.5
+[LOG] 
+[LOG] --- Trouveur.highlight ---
+[LOG] scan duration: 2945
+[LOG] scan duration: 3185
+[LOG] 
+[LOG] average scan duration: 3065
+
+
+After loop refactoring
+
+[LOG] 
+[LOG] --- Trouveur.find ---
+[LOG] scan duration: 3940
+[LOG] scan duration: 4294
+[LOG] 
+[LOG] average scan duration: 4117
+[LOG] 
+[LOG] --- Trouveur.replace ---
+[LOG] scan duration: 3888
+[LOG] scan duration: 3870
+[LOG] 
+[LOG] average scan duration: 3879
+[LOG] 
+[LOG] --- Trouveur.count ---
+[LOG] scan duration: 3941
+[LOG] scan duration: 4220
+[LOG] 
+[LOG] average scan duration: 4080.5
+[LOG] 
+[LOG] --- Trouveur.highlight ---
+[LOG] scan duration: 3932
+[LOG] scan duration: 4245
+[LOG] 
+[LOG] average scan duration: 4088.5
+

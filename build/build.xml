@@ -1,7 +1,30 @@
 <project default="run-all">
+	<taskdef resource="net/sf/antcontrib/antlib.xml" /> 
 
-	<!-- properties -->
+	<condition property="test.type" value="unit">
+		<not>  
+			<isset property="test.type"/>
+		</not>
+	</condition>
+
+	<if>
+		<equals arg1="${test.type}" arg2="unit" />
+		<then>
+			<property name="config.files.location" value="../test/conf" />
+		</then>
+		<elseif>
+			<equals arg1="${test.type}" arg2="performance" />
+			<then>
+				<property name="config.files.location" value="../test/conf/performance" />
+			</then>
+		</elseif>
+		<else>
+			<fail>Unsupported test type.</fail>
+		</else>
+	</if>
 	
+	<!-- properties -->
+
 	<property file="local.properties"/>
 
 	<!-- Xvfb display number -->
@@ -51,7 +74,7 @@
 	<target name="run-tests-on-original">
 		<antcall target="run-tests-on-all-browsers">
 		    <param name="message" value="Running tests on original Trouveur"/>
-		    <param name="configFile" value="../test/conf/jsTestDriver.conf"/>
+		    <param name="configFile" value="${config.files.location}/jsTestDriver.conf"/>
 		    <param name="testReportsFolder" value="${testReportsFolderBase}/original"/>
 		</antcall>
 	</target>
@@ -65,7 +88,7 @@
 	<target name="run-tests-on-minified">
 		<antcall target="run-tests-on-all-browsers">
 		    <param name="message" value="Running tests on minified Trouveur"/>
-		    <param name="configFile" value="../test/conf/jsTestDriverMinified.conf"/>
+		    <param name="configFile" value="${config.files.location}/jsTestDriverMinified.conf"/>
 		    <param name="testReportsFolder" value="${testReportsFolderBase}/minified"/>
 		</antcall>
 	</target>
@@ -79,7 +102,7 @@
 	<target name="run-tests-on-minified-pack">
 		<antcall target="run-tests-on-all-browsers">
 		    <param name="message" value="Running tests on minified pack Trouveur with XRegExp"/>
-		    <param name="configFile" value="../test/conf/jsTestDriverMinifiedPack.conf"/>
+		    <param name="configFile" value="${config.files.location}/jsTestDriverMinifiedPack.conf"/>
 		    <param name="testReportsFolder" value="${testReportsFolderBase}/minified-pack"/>
 		</antcall>
 	</target>
