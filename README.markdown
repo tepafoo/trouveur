@@ -169,7 +169,7 @@ or throws an error {Error} if any of the inputs are invalid
     Trouveur.version
     
 
-Returns the version. Currently `0.9`.
+Returns the version. Currently `0.9.1`.
 
 Download
 --------
