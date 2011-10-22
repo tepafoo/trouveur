@@ -2,37 +2,55 @@
 
 	// some initialisation
 
-	var document = window.document;
-
-	if (typeof XRegExp !== 'function') {
-		throw new Error('Trouveur - This library requires XRegExp to work');
+	function getTypeCheckFunction(type) {
+		return function(o) {
+			return Object.prototype.toString.call(o) === type;
+		};
 	}
 
-	var highlightSettings = {
+	var document = window.document,
+
+	/**
+	 * Returns <code>true</code> if the given argument is a function.
+	 * 
+	 * @param o
+	 */
+	isFunction = getTypeCheckFunction('[object Function]'),
+
+	/**
+	 * Returns <code>true</code> if the given argument is a string.
+	 * 
+	 * @param o
+	 */
+	isString = getTypeCheckFunction('[object String]'),
+
+	/**
+	 * Returns <code>true</code> if the given argument is a object.
+	 * 
+	 * @param o
+	 */
+	isObject = getTypeCheckFunction('[object Object]'),
+
+	highlightSettings = {
 		className : 'trouveur-highlight',
 		htmlPrefix : '<span class="trouveur-highlight">',
 		htmlSuffix : '</span>'
-	};
+	},
 
 	// use HTML5 document.head if possible
-	var head = document.head || document.getElementsByTagName('head')[0];
-	if (head) {
-		var trouveurCss = document.createElement('style');
-		trouveurCss.innerHTML = '.' + highlightSettings.className + ' {background: yellow; color: black;}';
-		head.appendChild(trouveurCss);
-	}
+	head = document.head || document.getElementsByTagName('head')[0],
 
 	// internal utility functions and variables
 
-	var returnTypes = {
+	returnTypes = {
 		count : 'c',
 		firstNode : 'fn',
 		anyNode : 'an',
 		allOrderedNodes : 'aon',
 		allUnorderedNodes : 'aun'
-	};
+	},
 
-	var defaultOptions = {
+	defaultOptions = {
 		// case insensitive
 		i : true,
 		// whole word
@@ -41,15 +59,28 @@
 		h : true,
 		// return type
 		r : returnTypes.allUnorderedNodes
-	};
+	},
 
-	var alphabet = {
+	alphabet = {
 		lower : 'abcdefghijklmnopqrstuvwxyz',
 		upper : 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	};
+	},
 
-	var unhighlightRegExp = new XRegExp(highlightSettings.htmlPrefix + '((?:(?!</span>).)*)'
-			+ highlightSettings.htmlSuffix, 'gi');
+	unhighlightRegExp = new XRegExp(
+			highlightSettings.htmlPrefix + '((?:(?!</span>).)*)' + highlightSettings.htmlSuffix, 'gi'),
+
+	// used in processXPathResult()
+	TEXT_NODE_TYPE = 3;
+
+	if (!isFunction(XRegExp)) {
+		throw new Error('Trouveur - This library requires XRegExp to work');
+	}
+
+	if (head) {
+		var trouveurCss = document.createElement('style');
+		trouveurCss.innerHTML = '.' + highlightSettings.className + ' {background: yellow; color: black;}';
+		head.appendChild(trouveurCss);
+	}
 
 	/**
 	 * Returns a formatted version of the given text prior to XPath querying.
@@ -72,9 +103,9 @@
 	 * @returns {@link String} XPath query
 	 */
 	function constructXpathQuery(text, caseInsensitive) {
-		var formattedText = formatForXpath(text);
+		var formattedText = formatForXpath(text),
+			query = [];
 
-		var query = [];
 		query.push('descendant-or-self::*');
 		query.push('[(not(self::script or self::style or self::head');
 		query.push(' or self::meta or self::title or self::link');
@@ -113,8 +144,9 @@
 	 * @returns {@link Array} array of nodes
 	 */
 	function convertXpathNodeSnapshotToArray(nodeSnapshot) {
-		var result = [];
-		for ( var i = 0; i < nodeSnapshot.snapshotLength; i++) {
+		var result = [], 
+			i;
+		for (i = 0; i < nodeSnapshot.snapshotLength; i++) {
 			result.push(nodeSnapshot.snapshotItem(i));
 		}
 
@@ -122,7 +154,11 @@
 	}
 
 	function createRegularExpression(text, options) {
-		var regExpOptions = '';
+		var regExpOptions = '',
+			prefix = '',
+			suffix = '',
+			body;
+
 		if (!(options.r === returnTypes.anyNode || options.r === returnTypes.firstNode)) {
 			regExpOptions += 'g';
 		}
@@ -130,8 +166,6 @@
 			regExpOptions += 'i';
 		}
 
-		var prefix = '';
-		var suffix = '';
 		if (options.w) {
 			// regular expression to make sure we're matching the whole word
 			// \\P{L} means any character that is not a Unicode letter, see
@@ -141,14 +175,15 @@
 			suffix = '(\\P{L}|$)';
 		}
 
-		var body = options.h ? '(' + text + ')' : text;
+		body = options.h ? '(' + text + ')' : text;
 
 		return new XRegExp(prefix + body + suffix, regExpOptions);
 	}
 
 	function createTextReplacementRegularExpression(options, replacement) {
-		var prefix = '';
-		var suffix = '';
+		var prefix = '',
+			suffix = '',
+			textReplacement;
 
 		if (options.w) {
 			prefix = '$1';
@@ -163,8 +198,7 @@
 			suffix += '$3';
 		}
 
-		var textReplacement = null;
-		if (typeof replacement === 'string') {
+		if (isString(replacement)) {
 			textReplacement = replacement;
 		} else if (options.w) {
 			textReplacement = '$2';
@@ -174,9 +208,6 @@
 
 		return prefix + textReplacement + suffix;
 	}
-
-	// used in processXPathResult()
-	var TEXT_NODE_TYPE = 3;
 
 	/**
 	 * Processes the XPath results:
@@ -200,15 +231,17 @@
 	 */
 	function processXPathResult(text, nodes, options, replacement) {
 
-		var regularExpression = createRegularExpression(text, options);
-		var textReplacementRegularExpression = createTextReplacementRegularExpression(options, replacement);
+		var regularExpression = createRegularExpression(text, options),
+		textReplacementRegularExpression = createTextReplacementRegularExpression(options, replacement),
 
-		var result = {
+		result = {
 			matchCount : 0,
 			nodes : []
-		};
+		},
+		
+		nodeMatchCount,
 
-		var xRegExpIterateCallback = function(matchArray, matchCount, stringBeingTraversed, regExp) {
+		xRegExpIterateCallback = function(matchArray, matchCount, stringBeingTraversed, regExp) {
 
 			nodeMatchCount++;
 
@@ -221,15 +254,20 @@
 				// it can detect matches that are separated by only one character, such as "find me find me"
 				regExp.lastIndex--;
 			}
-		};
+		},
 
-		for ( var i = 0; i < nodes.length; i++) {
-			var node = nodes[i];
-			var nodeMatchCount = 0;
+		i,
+		j,
+		node,
+		childNode;
 
-			for ( var j = 0; j < node.childNodes.length; j++) {
+		for ( i = 0; i < nodes.length; i++) {
+			node = nodes[i];
+			nodeMatchCount = 0;
 
-				var childNode = node.childNodes[j];
+			for ( j = 0; j < node.childNodes.length; j++) {
+
+				childNode = node.childNodes[j];
 
 				if (childNode.nodeType === TEXT_NODE_TYPE) {
 					XRegExp.iterate(childNode.data, regularExpression, xRegExpIterateCallback);
@@ -245,7 +283,7 @@
 				result.nodes.push(node);
 				result.matchCount += nodeMatchCount;
 
-				if (typeof replacement === 'string' || options.h) {
+				if (isString(replacement) || options.h) {
 					node.innerHTML = node.innerHTML.replace(regularExpression, textReplacementRegularExpression);
 				}
 
@@ -268,8 +306,10 @@
 	 * @returns {@link Boolean} <code>true</code> if the given object is an HTML element
 	 */
 	function isHTMLElement(o) {
-		return o !== null && (typeof HTMLElement === 'object' ? o instanceof HTMLElement : // DOM2
-		typeof o === 'object' && o.nodeType === 1 && typeof o.nodeName === 'string');
+		// Object.prototype.toString.call(o) could be something else than ['object Object']
+		// hence the use of typeof instead of isObject()
+		return o !== null && (isObject(HTMLElement) ? o instanceof HTMLElement : // DOM2
+		typeof o === 'object' && o.nodeType === 1 && isString(o.nodeName));
 	}
 
 	/**
@@ -285,8 +325,10 @@
 	 *             if any of the input arguments is invalid
 	 */
 	function validateInput(text, element) {
-		if (!(typeof text === 'string' && text !== '' && isHTMLElement(element))) {
-			var error = new Error('Search text and HTML element must be provided');
+		var error;
+
+		if (!(isString(text) && text !== '' && isHTMLElement(element))) {
+			error = new Error('Search text and HTML element must be provided');
 			error.name = 'InvalidArgumentError';
 			throw error;
 		}
@@ -304,20 +346,25 @@
 	 *             if the user options object is invalid
 	 */
 	function initialiseOptions(options) {
-		var result = {};
+		var result = {},
+			property,
+			error;
 		// set default options if needed
-		if (options !== null && typeof options === 'object') {
-			for ( var property in defaultOptions) {
+		if (options !== null && isObject(options)) {
+			for ( property in defaultOptions) {
 				if (property in options) {
 					result[property] = options[property];
 				} else {
 					result[property] = defaultOptions[property];
 				}
 			}
-		} else if (options !== null && typeof options === 'undefined') {
+		}
+		// Object.prototype.toString.call() does not always return ['object Undefined']. This changes per browser.
+		// Hence the use of typeof instead of isObject()
+		else if (options !== null && typeof options === 'undefined') {
 			result = defaultOptions;
 		} else {
-			var error = new Error('Options must be an Object');
+			error = new Error('Options must be an Object');
 			error.name = 'InvalidArgumentError';
 			throw error;
 		}
@@ -342,10 +389,12 @@
 	 */
 	function runXPathQuery(text, element, options) {
 
-		var query = constructXpathQuery(text, options.i);
+		var query = constructXpathQuery(text, options.i),
+			error,
+			xPathResult,
 
 		// decide on the XPath return type
-		var xPathReturnType = null;
+		xPathReturnType = null;
 		switch (options.r) {
 		case returnTypes.count:
 			xPathReturnType = XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE;
@@ -375,16 +424,16 @@
 			xPathReturnType = XPathResult.UNORDERED_NODE_SNAPSHOT_TYPE;
 			break;
 		default:
-			var error = new Error('Invalid return type');
+			error = new Error('Invalid return type');
 			error.name = 'InvalidArgumentError';
 			throw error;
 		}
 
 		// run the query
-		var xPathResult = document.evaluate(query, element, null, xPathReturnType, null);
+		xPathResult = document.evaluate(query, element, null, xPathReturnType, null),
 
 		// populate the resulting array
-		var nodes = null;
+		nodes = null;
 		switch (options.r) {
 		case returnTypes.count:
 		case returnTypes.allOrderedNodes:
@@ -413,7 +462,7 @@
 	var Trouveur = function() {
 	};
 
-	Trouveur.version = '0.9';
+	Trouveur.version = '0.9.1';
 
 	/**
 	 * Scans through the given HTML element and counts occurrences of the given text.
@@ -446,20 +495,23 @@
 	 *             {@link Error} if any of the inputs are invalid
 	 */
 	Trouveur.count = function(text, element, options) {
+		var optionsToUse,
+			nodes,
+			result = 0,
+			processedResult;
 
 		// throws error if text of element invalid
 		validateInput(text, element);
 
 		// throws error if options object invalid
-		var optionsToUse = initialiseOptions(options);
+		optionsToUse = initialiseOptions(options);
 		optionsToUse.r = returnTypes.count;
 
 		// throws error if options return type
-		var nodes = runXPathQuery(text, element, optionsToUse);
+		nodes = runXPathQuery(text, element, optionsToUse);
 
-		var result = 0;
 		if (nodes !== null && nodes.length > 0) {
-			var processedResult = processXPathResult(text, nodes, optionsToUse);
+			processedResult = processXPathResult(text, nodes, optionsToUse);
 
 			result = processedResult.matchCount;
 		}
@@ -507,15 +559,16 @@
 		validateInput(text, element);
 
 		// throws error if options object invalid
-		var optionsToUse = initialiseOptions(options);
+		var optionsToUse = initialiseOptions(options),
 
 		// throws error if invalid options return type
-		var nodes = runXPathQuery(text, element, optionsToUse);
+		nodes = runXPathQuery(text, element, optionsToUse),
 
-		var result = [];
+		result = [],
+		processedResult;
 		if (nodes !== null && nodes.length > 0) {
 			if (!optionsToUse.i || optionsToUse.w || optionsToUse.h) {
-				var processedResult = processXPathResult(text, nodes, optionsToUse);
+				processedResult = processXPathResult(text, nodes, optionsToUse);
 
 				nodes = processedResult.nodes;
 			}
@@ -567,6 +620,7 @@
 	 *             {@link Error} if any of the inputs are invalid
 	 */
 	Trouveur.replace = function(text, replacement, element, options) {
+
 		// throws error if text of element invalid
 		validateInput(text, element);
 
@@ -578,14 +632,14 @@
 		}
 
 		// throws error if options object invalid
-		var optionsToUse = initialiseOptions(options);
+		var optionsToUse = initialiseOptions(options),
 
 		// throws error if invalid options return type
-		var nodes = runXPathQuery(text, element, optionsToUse);
-
-		var result = [];
+		nodes = runXPathQuery(text, element, optionsToUse),
+		result = [],
+		processedResult;
 		if (nodes !== null && nodes.length > 0) {
-			var processedResult = processXPathResult(text, nodes, optionsToUse, replacement);
+			processedResult = processXPathResult(text, nodes, optionsToUse, replacement);
 
 			nodes = processedResult.nodes;
 
@@ -646,12 +700,16 @@
 	 *             {@link Error} if the input element is invalid
 	 */
 	Trouveur.unhighlight = function(element) {
+		var highlightedElements,
+			parentNode,
+			error;
+
 		if (isHTMLElement(element)) {
-			var highlightedElements = element.getElementsByClassName(highlightSettings.className);
+			highlightedElements = element.getElementsByClassName(highlightSettings.className);
 
 			// the size of "highlightedElements" decreases dynamically as elements gets removed, hence the while loop
 			while (highlightedElements.length > 0) {
-				var parentNode = highlightedElements[0].parentNode;
+				parentNode = highlightedElements[0].parentNode;
 				// good news:
 				// 1. if the parent contains other highlighted elements, they will be unhighlighted here too
 				// 2. all unhighlighted elements dynamically get removed from the list "highlightedElements",
@@ -659,7 +717,7 @@
 				parentNode.innerHTML = parentNode.innerHTML.replace(unhighlightRegExp, '$1');
 			}
 		} else {
-			var error = new Error('An HTML element must be provided');
+			error = new Error('An HTML element must be provided');
 			error.name = 'InvalidArgumentError';
 			throw error;
 		}
