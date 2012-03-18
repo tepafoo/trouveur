@@ -462,7 +462,7 @@
 	var Trouveur = function() {
 	};
 
-	Trouveur.version = '0.9.1';
+	Trouveur.version = '0.9.2';
 
 	/**
 	 * Scans through the given HTML element and counts occurrences of the given text.
