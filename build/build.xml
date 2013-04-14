@@ -123,4 +123,5 @@
 	<!-- Xvfb not working -->
 	<!-- target name="run-all-with-xvfb" depends="start-xvfb,run-tests-on-original,minify,run-tests-on-minified,stop-xvfb"></target -->
 	<target name="run-all" depends="run-tests-on-original,minify,run-tests-on-minified,minify-pack,run-tests-on-minified-pack"></target>
+	<target name="minify-all" depends="minify,minify-pack"></target>
 </project>
