@@ -245,14 +245,10 @@
 
 			nodeMatchCount++;
 
-			if (options.r === returnTypes.firstNode || options.r === returnTypes.anyNode) {
-				// increment the regular expression's last index to the end of the string being traversed
-				// so that no further iteration is made, as one match has already been found
-				regExp.lastIndex = stringBeingTraversed.length - 1;
-			} else if (options.w) {
-				// rewind the regular expression's last index from one index so that
+			if (options.w) {
+				// rewind the last index on the match array from one index so that
 				// it can detect matches that are separated by only one character, such as "find me find me"
-				regExp.lastIndex--;
+				matchArray.index--;
 			}
 		},
 
@@ -270,7 +266,7 @@
 				childNode = node.childNodes[j];
 
 				if (childNode.nodeType === TEXT_NODE_TYPE) {
-					XRegExp.iterate(childNode.data, regularExpression, xRegExpIterateCallback);
+					XRegExp.forEach(childNode.data, regularExpression, xRegExpIterateCallback);
 				}
 
 				// break the INNER loop if only one match is required
@@ -462,7 +458,7 @@
 	var Trouveur = function() {
 	};
 
-	Trouveur.version = '0.9.2';
+	Trouveur.version = '0.9.3';
 
 	/**
 	 * Scans through the given HTML element and counts occurrences of the given text.

@@ -15,7 +15,7 @@ TrouveurFunctions = {
 	count : 'count',
 	replace : 'replace',
 	unhighlight : 'unhighlight',
-	highlight : 'highlight',
+	highlight : 'highlight'
 };
 
 DefaultReplacement = 'hello world';
@@ -46,14 +46,14 @@ function runnerUsesDefaultOptionsWhenPassingNoOptions(functionToCall) {
 
 	var resultDefaultOptionsPassed = null;
 	if (functionToCall === TrouveurFunctions.replace) {
-		resultDefaultOptionsPassed = Trouveur[functionToCall]('find me', DefaultReplacement, this.testHTMLContent2, expectedDefaultOptions);	
+		resultDefaultOptionsPassed = Trouveur[functionToCall]('find me', DefaultReplacement, this.testHTMLContent2, expectedDefaultOptions);
 	} else {
 		resultDefaultOptionsPassed = Trouveur[functionToCall]('find me', this.testHTMLContent2, expectedDefaultOptions);
 	}
 
 	if (functionToCall === TrouveurFunctions.find || functionToCall === TrouveurFunctions.replace) {
 		assertEquals('calling without options should be the same as using default options', resultDefaultOptionsPassed.length, resultNoOptionsPassed.length);
-		assertEquals('calling without options should be the same as using default options', resultDefaultOptionsPassed[0].innerHTML, resultNoOptionsPassed[0].innerHTML);	
+		assertEquals('calling without options should be the same as using default options', resultDefaultOptionsPassed[0].innerHTML, resultNoOptionsPassed[0].innerHTML);
 	} else if (functionToCall === TrouveurFunctions.count) {
 		assertEquals('calling without options should be the same as using default options', resultDefaultOptionsPassed, resultNoOptionsPassed);
 	} else if (functionToCall === TrouveurFunctions.highlight) {
@@ -118,7 +118,7 @@ function runnerThrowsInvalidArgumentErrorWhenPassingOptions(functionToCall, opti
 		assertNotUndefined(this.testHTMLContent);
 
 		if (functionToCall === TrouveurFunctions.replace) {
-			Trouveur[functionToCall]('find me', DefaultReplacement, this.testHTMLContent, options);	
+			Trouveur[functionToCall]('find me', DefaultReplacement, this.testHTMLContent, options);
 		} else {
 			Trouveur[functionToCall]('find me', this.testHTMLContent, options);
 		}
@@ -140,7 +140,7 @@ function runnerThrowsInvalidArgumentErrorWhenPassingInvalidReturnType(functionTo
 		if (functionToCall === TrouveurFunctions.replace) {
 			Trouveur[functionToCall]('find me', DefaultReplacement, this.testHTMLContent, {
 				r : 'thisIsAnInvalidReturnType'
-			});	
+			});
 		} else {
 			Trouveur[functionToCall]('find me', this.testHTMLContent, {
 				r : 'thisIsAnInvalidReturnType'
@@ -328,7 +328,7 @@ function runnerReplaceThrowsInvalidArgumentErrorWhenPassingReplacement(replaceme
 		/*:DOC testHTMLContent = <div><p>find me</p></div> */
 		assertNotUndefined(this.testHTMLContent);
 
-		Trouveur.replace('find me', replacement, this.testHTMLContent);	
+		Trouveur.replace('find me', replacement, this.testHTMLContent);
 	} catch(error) {
 		assertEquals('must throw an error', 'InvalidArgumentError', error.name);
 		assertEquals('must throw an error', 'Replacement text must be provided', error.message);
@@ -392,7 +392,7 @@ function runnerLoop(options, expectedArray, functionToCall) {
 function runnerFindOrReplace(text, element, options, expected, functionToCall) {
 	var actual = null;
 	if (functionToCall === TrouveurFunctions.replace) {
-		actual = Trouveur[functionToCall](text, DefaultReplacement, element, options);	
+		actual = Trouveur[functionToCall](text, DefaultReplacement, element, options);
 	} else {
 		actual = Trouveur[functionToCall](text, element, options);
 	}
@@ -428,7 +428,7 @@ function runnerHighlight(text, element, options, expected) {
 	Trouveur.highlight(text, element, options);
 
 	var highlighted = element.getElementsByClassName('trouveur-highlight');
-	
+
 	if (expected === 'emptyArray') {
 		assertTrue(highlighted.length === 0);
 	} else {
@@ -448,7 +448,7 @@ function runnerHighlight(text, element, options, expected) {
 //                        |
 //                     whole word
 // 
-// where X is in {0,1} -> {true, false}
+// where X is in {0,1} -> {false, true}
 
 //
 // return type === count
@@ -2461,7 +2461,7 @@ function runnerUnhighlight(functionToCall) {
 	if (functionToCall === TrouveurFunctions.replace) {
 		Trouveur[functionToCall]('find me', DefaultReplacement, this.testHTMLContent, {
 			h : true
-		});	
+		});
 	} else {
 		Trouveur[functionToCall]('find me', this.testHTMLContent, {
 			h : true
@@ -2531,12 +2531,12 @@ function runnerPassedOptionsObjectNotModified(functionToCall) {
 	var optionsCopy = copyObject(options);
 
 	if (functionToCall === TrouveurFunctions.replace) {
-		Trouveur[functionToCall]('find me', DefaultReplacement, this.testHTMLContent, options);	
+		Trouveur[functionToCall]('find me', DefaultReplacement, this.testHTMLContent, options);
 	} else {
 		Trouveur[functionToCall]('find me', this.testHTMLContent, options);
 	}
 
-	assertEquals(optionsCopy,options);	
+	assertEquals(optionsCopy,options);
 };
 
 TrouveurTest.prototype.testFindPassedOptionsObjectNotModified = function() {
@@ -2678,7 +2678,8 @@ function runnerHandlersNotRemoved(functionToCall) {
 			'touchmove', 'touchenter', 'touchleave', 'touchcancel', 'touchleave' ];
 
   // TODO - for 'focus' event to work, need to somehow insert the form on the document body first
-	var formEvents = [ 'select', 'change', 'submit', 'reset', 'blur' ];
+  // TODO - also need to investigate how to make 'submit' event work with latest versions of Chrome
+	var formEvents = [ 'select', 'change', 'reset', 'blur' ];
 
 	var binEvents = function(element, events) {
 		for ( var i = 0; i < events.length; i++) {
@@ -2711,7 +2712,7 @@ function runnerHandlersNotRemoved(functionToCall) {
 			};
 			$(element).trigger(events[i], param);
 			assertTrue('It must still be possible to trigger event "' + param.value + '"', param.result);
-		}	
+		}
 	};
 
 	assertResults(div, events);
