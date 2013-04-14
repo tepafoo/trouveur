@@ -33,7 +33,7 @@
 	<!-- js-test-driver specific -->
 	<property name="serverPortNumber" value="4224" />
 	<property name="testReportsFolderBase" value="target/test-reports" />
-	<property name="jsTestDriverJarPath" value="lib/JsTestDriver-1.3.2.jar" />
+	<property name="jsTestDriverJarPath" value="lib/JsTestDriver-1.3.5.jar" />
 
 
 	<!-- targets -->
